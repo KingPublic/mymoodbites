@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 const navLinks = [
   { label: 'Tentang Kami', href: '#tentang' },
