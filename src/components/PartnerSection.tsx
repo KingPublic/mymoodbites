@@ -1,12 +1,12 @@
 const menuPills = [
   'Nasi Goreng Merah', 'Mie Kering/Titi', 'Ayam Geprek', 'Bakso Kuah',
-  'Beef Teriyaki', 'Beef Patty', 'Kentang Goreng', 'Ubi Goreng', 'Aneka Indomie', 'Prasmanan Harian',
+  'Beef Teriyaki', 'Beef Patty', 'Kentang Goreng', 'Ubi Goreng', 'Aneka Indomie',
 ];
 
 const stats = [
   { emoji: '🍽️', label: '11+ Menu Tetap' },
   { emoji: '🔄', label: 'Prasmanan Berubah Tiap Hari' },
-  { emoji: '✅', label: 'Data Menu Terverifikasi Langsung' },
+  { emoji: '🤝', label: 'Mitra Resmi MoodBites' },
 ];
 
 const PartnerSection = () => (
@@ -32,7 +32,7 @@ const PartnerSection = () => (
           </div>
         </div>
         <p className="text-text-muted-custom leading-relaxed mb-6">
-          Kantin utama kampus UC Makassar yang menjadi pusat kuliner mahasiswa sehari-hari. Menyediakan menu tetap andalan dan sajian prasmanan segar yang berubah setiap harinya — semua terintegrasi langsung dengan sistem rekomendasi <span className="text-coral font-semibold">MoodBites</span>.
+          Kantin utama kampus UC Makassar yang menjadi pusat kuliner mahasiswa sehari-hari. Menyediakan menu tetap andalan yang konsisten dan sajian prasmanan segar yang bervariasi setiap harinya.
         </p>
 
         <div className="flex flex-wrap gap-2 mb-6">

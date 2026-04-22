@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 const navLinks = [
   { label: 'Tentang Kami', href: '#tentang' },
@@ -15,6 +15,18 @@ const Navbar = () => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const id = href.replace('#', '');
+    const el = document.getElementById(id);
+    if (el) {
+      const offset = 80;
+      const top = el.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+    setMenuOpen(false);
   }, []);
 
   return (
@@ -38,6 +50,7 @@ const Navbar = () => {
             <a
               key={l.href}
               href={l.href}
+              onClick={(e) => handleNavClick(e, l.href)}
               className="text-sm font-medium text-text-dark hover:text-coral transition-colors"
             >
               {l.label}
@@ -64,7 +77,7 @@ const Navbar = () => {
             <a
               key={l.href}
               href={l.href}
-              onClick={() => setMenuOpen(false)}
+              onClick={(e) => handleNavClick(e, l.href)}
               className="text-sm font-medium text-text-dark hover:text-coral py-2"
             >
               {l.label}

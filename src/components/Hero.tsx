@@ -6,6 +6,16 @@ const emojis = [
   { emoji: '😌', size: 'w-12 h-12 text-xl', pos: 'bottom-24 right-[15%]', anim: 'animate-float-delay-4' },
 ];
 
+const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  e.preventDefault();
+  const id = href.replace('#', '');
+  const el = document.getElementById(id);
+  if (el) {
+    const top = el.getBoundingClientRect().top + window.scrollY - 80;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+};
+
 const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-cream grain-overlay overflow-hidden pt-16">
@@ -39,12 +49,14 @@ const Hero = () => {
         <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up animate-delay-600">
           <a
             href="#dukung"
+            onClick={(e) => scrollToSection(e, '#dukung')}
             className="inline-block bg-coral text-primary-foreground font-semibold px-8 py-3 rounded-full hover:bg-coral-dark hover:scale-[1.02] active:scale-[0.98] transition-all"
           >
             Dukung MoodBites 💛
           </a>
           <a
             href="#tentang"
+            onClick={(e) => scrollToSection(e, '#tentang')}
             className="inline-block border-2 border-coral text-coral font-semibold px-8 py-3 rounded-full hover:bg-coral hover:text-primary-foreground hover:scale-[1.02] active:scale-[0.98] transition-all"
           >
             Pelajari Lebih Lanjut
