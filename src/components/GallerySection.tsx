@@ -30,8 +30,8 @@ const products = [
 ];
 
 const GallerySection = () => {
-  const [active, setActive] = useState('Semua');
-  const filtered = active === 'Semua' ? products : products.filter((p) => p.tag === active);
+  const [activeFilter, setActiveFilter] = useState<string>('Semua');
+  const filtered = activeFilter === 'Semua' ? [...products] : products.filter((p) => p.tag === activeFilter);
 
   return (
     <section className="bg-blush-light py-20 px-4">
@@ -48,9 +48,9 @@ const GallerySection = () => {
           {categories.map((c) => (
             <button
               key={c}
-              onClick={() => setActive(c)}
+              onClick={() => setActiveFilter(c)}
               className={`whitespace-nowrap px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                active === c
+                activeFilter === c
                   ? 'bg-coral text-primary-foreground'
                   : 'bg-cream text-text-dark hover:bg-blush-mid'
               }`}

@@ -14,12 +14,12 @@ const SupportSection = () => (
       </p>
 
       <div className="reveal flex flex-col sm:flex-row gap-4 justify-center mb-8">
-        <button className="bg-cream text-coral font-semibold px-8 py-3 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all text-lg">
+        <a href="https://forms.gle/if6k8X8bk612GQgK9" target="_blank" rel="noopener noreferrer" className="bg-cream text-coral font-semibold px-8 py-3 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all text-lg inline-block">
           💛 Dukung / Support Us
-        </button>
-        <button className="border-2 border-primary-foreground text-primary-foreground font-semibold px-8 py-3 rounded-full hover:bg-primary-foreground/10 hover:scale-[1.02] active:scale-[0.98] transition-all">
+        </a>
+        <a href="https://forms.gle/if6k8X8bk612GQgK9" target="_blank" rel="noopener noreferrer" className="border-2 border-primary-foreground text-primary-foreground font-semibold px-8 py-3 rounded-full hover:bg-primary-foreground/10 hover:scale-[1.02] active:scale-[0.98] transition-all inline-block">
           📩 Kasih Feedback
-        </button>
+        </a>
       </div>
 
       <p className="reveal text-primary-foreground/60 text-sm">
