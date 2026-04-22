@@ -1,6 +1,6 @@
 const menuPills = [
   'Nasi Goreng Merah', 'Mie Kering/Titi', 'Ayam Geprek', 'Bakso Kuah',
-  'Beef Teriyaki', 'Beef Patty', 'Kentang Goreng', 'Ubi Goreng', 'Aneka Indomie', 'Prasmanan Harian',
+  'Beef Teriyaki', 'Beef Patty', 'Kentang Goreng', 'Ubi Goreng', 'Aneka Indomie',
 ];
 
 const stats = [
