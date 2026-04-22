@@ -31,8 +31,9 @@ const PartnerSection = () => (
             <p className="text-text-muted-custom text-sm">📍 Area Kampus UC Makassar</p>
           </div>
         </div>
-        <p className="text-text-muted-custom leading-relaxed mb-6">
-          Kantin utama kampus UC Makassar yang menjadi pusat kuliner mahasiswa sehari-hari. Menyediakan menu tetap andalan dan sajian prasmanan segar yang berubah setiap harinya — semua terintegrasi langsung dengan sistem rekomendasi <span className="text-coral font-semibold">MoodBites</span>.
+            <p className="text-text-muted-custom leading-relaxed mb-6">
+              Kantin utama kampus UC Makassar yang menjadi pusat kuliner mahasiswa sehari-hari. Menyediakan menu tetap andalan yang konsisten dan sajian prasmanan segar yang bervariasi setiap harinya.
+            </p>
         </p>
 
         <div className="flex flex-wrap gap-2 mb-6">

@@ -1,20 +1,32 @@
 import { useState } from 'react';
+import foodNasiGoreng from '@/assets/food-nasi-goreng.jpg';
+import foodMieGoreng from '@/assets/food-mie-goreng.jpg';
+import foodMieTiti from '@/assets/food-mie-titi.jpg';
+import foodAyamGeprek from '@/assets/food-ayam-geprek.jpg';
+import foodTelurGimbal from '@/assets/food-telur-gimbal.jpg';
+import foodBakso from '@/assets/food-bakso.jpg';
+import foodBeefTeriyaki from '@/assets/food-beef-teriyaki.jpg';
+import foodBeefPatty from '@/assets/food-beef-patty.jpg';
+import foodKentangGoreng from '@/assets/food-kentang-goreng.jpg';
+import foodUbiGoreng from '@/assets/food-ubi-goreng.jpg';
+import foodIndomie from '@/assets/food-indomie.jpg';
+import foodPrasmanan from '@/assets/food-prasmanan.jpg';
 
 const categories = ['Semua', 'Nasi & Mie', 'Lauk Paket', 'Gorengan', 'Bakso & Kuah', 'Indomie', 'Prasmanan'];
 
 const products = [
-  { emoji: '🍳', name: 'Nasi Goreng Merah', tag: 'Nasi & Mie', desc: 'Nasi goreng khas dengan bumbu merah yang kaya rasa, porsi mengenyangkan.' },
-  { emoji: '🍜', name: 'Mie Goreng Jakarta', tag: 'Nasi & Mie', desc: 'Cita rasa mie goreng ala ibukota, gurih dan cocok untuk semua mood.' },
-  { emoji: '🍝', name: 'Mie Kering / Titi', tag: 'Nasi & Mie', desc: 'Kuliner khas Makassar — mie renyah dengan kuah kental yang menggugah selera.' },
-  { emoji: '🍗', name: 'Paket Ayam Geprek', tag: 'Lauk Paket', desc: 'Ayam crispy geprek dengan sambal pilihan level pedas, nasi, dan lalapan segar.' },
-  { emoji: '🍳', name: 'Paket Telur Gimbal', tag: 'Lauk Paket', desc: 'Telur dadar ala gimbal yang gurih, disajikan dengan nasi hangat dan sambal.' },
-  { emoji: '🍲', name: 'Bakso Kuah', tag: 'Bakso & Kuah', desc: 'Bakso sapi kenyal dalam kuah kaldu bening hangat yang menenangkan.' },
-  { emoji: '🥩', name: 'Beef Teriyaki', tag: 'Lauk Paket', desc: 'Daging sapi lembut dengan saus teriyaki manis-gurih khas Jepang.' },
-  { emoji: '🍔', name: 'Beef Patty', tag: 'Lauk Paket', desc: 'Patty daging sapi juicy yang cocok dimakan sendiri atau dengan nasi.' },
-  { emoji: '🍟', name: 'Kentang Goreng', tag: 'Gorengan', desc: 'Kentang goreng crispy golden — camilan atau pendamping menu utama.' },
-  { emoji: '🍠', name: 'Ubi Goreng', tag: 'Gorengan', desc: 'Ubi goreng manis-gurih, pilihan gorengan lokal yang mengenyangkan.' },
-  { emoji: '🍜', name: 'Aneka Indomie', tag: 'Indomie', desc: 'Berbagai varian Indomie — goreng, kuah, geprek — comfort food sejati mahasiswa.' },
-  { emoji: '🍱', name: 'Menu Prasmanan Harian', tag: 'Prasmanan', desc: 'Pilihan lauk-pauk dan sayur prasmanan yang berubah setiap hari, selalu segar dan variatif.' },
+  { img: foodNasiGoreng, name: 'Nasi Goreng Merah', tag: 'Nasi & Mie', desc: 'Nasi goreng khas dengan bumbu merah yang kaya rasa, porsi mengenyangkan.' },
+  { img: foodMieGoreng, name: 'Mie Goreng Jakarta', tag: 'Nasi & Mie', desc: 'Cita rasa mie goreng ala ibukota, gurih dan cocok untuk semua mood.' },
+  { img: foodMieTiti, name: 'Mie Kering / Titi', tag: 'Nasi & Mie', desc: 'Kuliner khas Makassar — mie renyah dengan kuah kental yang menggugah selera.' },
+  { img: foodAyamGeprek, name: 'Paket Ayam Geprek', tag: 'Lauk Paket', desc: 'Ayam crispy geprek dengan sambal pilihan level pedas, nasi, dan lalapan segar.' },
+  { img: foodTelurGimbal, name: 'Paket Telur Gimbal', tag: 'Lauk Paket', desc: 'Telur dadar ala gimbal yang gurih, disajikan dengan nasi hangat dan sambal.' },
+  { img: foodBakso, name: 'Bakso Kuah', tag: 'Bakso & Kuah', desc: 'Bakso sapi kenyal dalam kuah kaldu bening hangat yang menenangkan.' },
+  { img: foodBeefTeriyaki, name: 'Beef Teriyaki', tag: 'Lauk Paket', desc: 'Daging sapi lembut dengan saus teriyaki manis-gurih khas Jepang.' },
+  { img: foodBeefPatty, name: 'Beef Patty', tag: 'Lauk Paket', desc: 'Patty daging sapi juicy yang cocok dimakan sendiri atau dengan nasi.' },
+  { img: foodKentangGoreng, name: 'Kentang Goreng', tag: 'Gorengan', desc: 'Kentang goreng crispy golden — camilan atau pendamping menu utama.' },
+  { img: foodUbiGoreng, name: 'Ubi Goreng', tag: 'Gorengan', desc: 'Ubi goreng manis-gurih, pilihan gorengan lokal yang mengenyangkan.' },
+  { img: foodIndomie, name: 'Aneka Indomie', tag: 'Indomie', desc: 'Berbagai varian Indomie — goreng, kuah, geprek — comfort food sejati mahasiswa.' },
+  { img: foodPrasmanan, name: 'Menu Prasmanan Harian', tag: 'Prasmanan', desc: 'Pilihan lauk-pauk dan sayur prasmanan yang berubah setiap hari, selalu segar dan variatif.' },
 ];
 
 const GallerySection = () => {
@@ -52,23 +64,34 @@ const GallerySection = () => {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {filtered.map((p, i) => (
             <div
-              key={i}
-              className="reveal bg-cream rounded-2xl p-5 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-200 group"
+              key={p.name}
+              className="reveal bg-cream rounded-2xl shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-200 group overflow-hidden"
               style={{ transitionDelay: `${i * 50}ms` }}
             >
-              <div className="text-4xl mb-3">{p.emoji}</div>
-              <h3 className="font-bold text-text-dark text-sm mb-1">{p.name}</h3>
-              <p className="text-text-muted-custom text-xs leading-relaxed mb-3">{p.desc}</p>
-              <span className="inline-block bg-coral/15 text-coral text-xs font-medium px-3 py-0.5 rounded-full">
-                {p.tag}
-              </span>
+              <div className="aspect-[4/3] overflow-hidden rounded-t-2xl">
+                <img
+                  src={p.img}
+                  alt={p.name}
+                  loading="lazy"
+                  width={672}
+                  height={512}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-4">
+                <h3 className="font-bold text-text-dark text-sm mb-1">{p.name}</h3>
+                <p className="text-text-muted-custom text-xs leading-relaxed mb-3">{p.desc}</p>
+                <span className="inline-block bg-coral/15 text-coral text-xs font-medium px-3 py-0.5 rounded-full">
+                  {p.tag}
+                </span>
+              </div>
             </div>
           ))}
         </div>
 
         <p className="reveal text-center mt-8 text-sm italic text-text-muted-custom">
           <span className="inline-block bg-coral/15 text-coral px-3 py-1 rounded-full mr-2 not-italic text-xs font-medium">🔄</span>
-          Menu prasmanan berubah setiap hari — <span className="text-coral">MoodBites</span> selalu update rekomendasi secara real-time sesuai ketersediaan menu.
+          Menu prasmanan berubah setiap hari — selalu ada pilihan baru yang segar untukmu.
         </p>
       </div>
     </section>
