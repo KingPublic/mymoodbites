@@ -6,7 +6,7 @@ const menuPills = [
 const stats = [
   { emoji: '🍽️', label: '11+ Menu Tetap' },
   { emoji: '🔄', label: 'Prasmanan Berubah Tiap Hari' },
-  { emoji: '✅', label: 'Data Menu Terverifikasi Langsung' },
+  { emoji: '🤝', label: 'Mitra Resmi MoodBites' },
 ];
 
 const PartnerSection = () => (
