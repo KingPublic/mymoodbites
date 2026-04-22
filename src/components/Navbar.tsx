@@ -50,6 +50,7 @@ const Navbar = () => {
             <a
               key={l.href}
               href={l.href}
+              onClick={(e) => handleNavClick(e, l.href)}
               className="text-sm font-medium text-text-dark hover:text-coral transition-colors"
             >
               {l.label}
@@ -76,7 +77,7 @@ const Navbar = () => {
             <a
               key={l.href}
               href={l.href}
-              onClick={() => setMenuOpen(false)}
+              onClick={(e) => handleNavClick(e, l.href)}
               className="text-sm font-medium text-text-dark hover:text-coral py-2"
             >
               {l.label}
