@@ -45,7 +45,7 @@ const Navbar = () => {
         </a>
 
         {/* Desktop */}
-        <div className="hidden md:flex gap-8">
+        <div className="hidden md:flex items-center gap-8">
           {navLinks.map((l) => (
             <a
               key={l.href}
@@ -56,6 +56,12 @@ const Navbar = () => {
               {l.label}
             </a>
           ))}
+          <a
+            href="https://moodbites.qzz.io/moodbites.apk"
+            className="text-sm font-semibold text-white bg-coral hover:bg-coral/90 px-4 py-2 rounded-full transition-colors"
+          >
+            Download APK
+          </a>
         </div>
 
         {/* Mobile hamburger */}
