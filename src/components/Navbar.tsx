@@ -89,6 +89,12 @@ const Navbar = () => {
               {l.label}
             </a>
           ))}
+          <a
+            href="https://moodbites.qzz.io/moodbites.apk"
+            className="text-sm font-semibold text-white bg-coral hover:bg-coral/90 px-4 py-2.5 rounded-full text-center transition-colors mt-1"
+          >
+            Download APK
+          </a>
         </div>
       )}
     </nav>
