@@ -4,52 +4,15 @@ pipeline {
     environment {
         REMOTE_USER        = 'moodbites'
         REMOTE_HOST        = '103.185.52.161'
-        REMOTE_APP_DIR     = '/home/moodbites/mymoodbites'
+        REMOTE_APP_DIR     = '~/mymoodbites'
         REMOTE_DEPLOY_DIR  = '/var/www/landingPage'
         SSH_CREDENTIALS_ID = 'moodbites-host-ssh'
     }
 
     stages {
 
-        stage('Install Dependencies') {
+        stage('Deploy via SSH') {
             steps {
-                echo 'Checking node_modules...'
-                sh '''
-                    if [ -d "node_modules" ]; then
-                        echo "node_modules found, running npm ci..."
-                        npm ci
-                    else
-                        echo "node_modules not found, running npm install..."
-                        npm install
-                    fi
-                '''
-            }
-        }
-
-        stage('Build') {
-            steps {
-                echo 'Building project...'
-                sh 'npm run build'
-            }
-        }
-
-        stage('Upload dist to Remote') {
-            steps {
-                echo 'Uploading dist folder to remote server...'
-                sshagent(credentials: [env.SSH_CREDENTIALS_ID]) {
-                    sh """
-                        rsync -avz --delete \
-                            -e "ssh -o StrictHostKeyChecking=no" \
-                            dist/ \
-                            ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_APP_DIR}/dist/
-                    """
-                }
-            }
-        }
-
-        stage('Deploy on Remote Host') {
-            steps {
-                echo 'Deploying to /var/www/landingPage on remote...'
                 sshagent(credentials: [env.SSH_CREDENTIALS_ID]) {
                     sh """
                         ssh -o StrictHostKeyChecking=no \
@@ -57,24 +20,37 @@ pipeline {
 
                             set -e
 
-                            DEPLOY_DIR="${REMOTE_DEPLOY_DIR}"
-                            DIST_DIR="${REMOTE_APP_DIR}/dist"
+                            echo ">>> Masuk ke direktori aplikasi..."
+                            cd ~/mymoodbites
 
-                            echo ">>> Clearing \$DEPLOY_DIR (keeping moodbites.apk and .htaccess)..."
+                            echo ">>> Git pull..."
+                            git pull
 
-                            # Hapus semua file & folder kecuali moodbites.apk dan .htaccess
-                            find "\$DEPLOY_DIR" -mindepth 1 \
+                            echo ">>> Mengecek node_modules..."
+                            if [ -d "node_modules" ]; then
+                                echo "node_modules ditemukan, menjalankan npm ci..."
+                                npm ci
+                            else
+                                echo "node_modules belum ada, menjalankan npm install..."
+                                npm install
+                            fi
+
+                            echo ">>> Build project..."
+                            npm run build
+
+                            echo ">>> Membersihkan /var/www/landingPage (kecuali moodbites.apk dan .htaccess)..."
+                            find /var/www/landingPage -mindepth 1 \
                                 ! -name 'moodbites.apk' \
                                 ! -name '.htaccess' \
                                 -delete 2>/dev/null || true
 
-                            echo ">>> Copying dist contents to \$DEPLOY_DIR..."
-                            cp -r "\$DIST_DIR"/. "\$DEPLOY_DIR"/
+                            echo ">>> Copy dist ke /var/www/landingPage..."
+                            cp -r ~/mymoodbites/dist/. /var/www/landingPage/
 
-                            echo ">>> Deployment complete!"
-                            ls -lah "\$DEPLOY_DIR"
+                            echo ">>> Selesai! Isi /var/www/landingPage:"
+                            ls -lah /var/www/landingPage
 
-                      ENDSSH
+ENDSSH
                     """
                 }
             }
@@ -83,13 +59,10 @@ pipeline {
 
     post {
         success {
-            echo 'Deployment berhasil! Landing page sudah live di /var/www/landingPage'
+            echo 'âœ… Deployment berhasil! Landing page sudah live.'
         }
         failure {
-            echo 'Deployment gagal. Cek log di atas untuk detail error.'
-        }
-        always {
-            cleanWs()
+            echo 'âŒ Deployment gagal. Cek log di atas untuk detail.'
         }
     }
 }
