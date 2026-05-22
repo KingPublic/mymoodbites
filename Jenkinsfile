@@ -25,7 +25,11 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh '''
-                    npm install
+                    if [ -d node_modules ]; then
+                        npm ci
+                    else
+                        npm install
+                    fi
                 '''
             }
         }
@@ -46,9 +50,14 @@ pipeline {
                     )
                 ]) {
                     sh '''
+                        echo ">>> Buat folder dist di remote jika belum ada..."
+                        ssh -i $SSH_KEY -o StrictHostKeyChecking=no \
+                            $SSH_USER@${HOST_IP} \
+                            "mkdir -p ${REMOTE_APP_DIR}/dist"
+
                         echo ">>> Upload dist ke remote..."
                         scp -i $SSH_KEY -o StrictHostKeyChecking=no \
-                            -r dist/ $SSH_USER@${HOST_IP}:${REMOTE_APP_DIR}/dist
+                            -r dist/. $SSH_USER@${HOST_IP}:${REMOTE_APP_DIR}/dist/
 
                         echo ">>> Upload Dockerfile dan docker-compose..."
                         scp -i $SSH_KEY -o StrictHostKeyChecking=no \
