@@ -28,6 +28,7 @@ cd /home/moodbites/mymoodbites
 git pull
 
 echo ">>> Install dependencies..."
+nvm use latest
 if [ -d node_modules ]; then
     npm ci
 else
