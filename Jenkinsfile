@@ -2,56 +2,54 @@ pipeline {
     agent any
 
     environment {
-        REMOTE_USER        = 'moodbites'
-        REMOTE_HOST        = '103.185.52.161'
-        REMOTE_APP_DIR     = '~/mymoodbites'
+        REMOTE_APP_DIR     = '/home/moodbites/mymoodbites'
         REMOTE_DEPLOY_DIR  = '/var/www/landingPage'
-        SSH_CREDENTIALS_ID = 'moodbites-host-ssh'
+        HOST_IP            = '103.185.52.161'
+        HOST_USER          = 'moodbites'
     }
 
     stages {
 
-        stage('Deploy via SSH') {
+        stage('Deploy') {
             steps {
-                sshagent(credentials: [env.SSH_CREDENTIALS_ID]) {
-                    sh """
-                        ssh -o StrictHostKeyChecking=no \
-                            ${REMOTE_USER}@${REMOTE_HOST} << 'ENDSSH'
+                withCredentials([
+                    sshUserPrivateKey(
+                        credentialsId: 'moodbites-host-ssh',
+                        keyFileVariable: 'SSH_KEY',
+                        usernameVariable: 'SSH_USER'
+                    )
+                ]) {
+                    sh '''
+                        ssh -i $SSH_KEY -o StrictHostKeyChecking=no \
+                            $SSH_USER@${HOST_IP} "
+                                set -e &&
+                                echo '>>> Git pull...' &&
+                                cd ${REMOTE_APP_DIR} &&
+                                git pull &&
 
-                            set -e
+                                echo '>>> Install dependencies...' &&
+                                if [ -d node_modules ]; then
+                                    npm ci
+                                else
+                                    npm install
+                                fi &&
 
-                            echo ">>> Masuk ke direktori aplikasi..."
-                            cd ~/mymoodbites
+                                echo '>>> Build...' &&
+                                npm run build &&
 
-                            echo ">>> Git pull..."
-                            git pull
+                                echo '>>> Bersihkan deploy dir...' &&
+                                find ${REMOTE_DEPLOY_DIR} -mindepth 1 \
+                                    ! -name 'moodbites.apk' \
+                                    ! -name '.htaccess' \
+                                    -delete 2>/dev/null || true &&
 
-                            echo ">>> Mengecek node_modules..."
-                            if [ -d "node_modules" ]; then
-                                echo "node_modules ditemukan, menjalankan npm ci..."
-                                npm ci
-                            else
-                                echo "node_modules belum ada, menjalankan npm install..."
-                                npm install
-                            fi
+                                echo '>>> Copy dist...' &&
+                                cp -r ${REMOTE_APP_DIR}/dist/. ${REMOTE_DEPLOY_DIR}/ &&
 
-                            echo ">>> Build project..."
-                            npm run build
-
-                            echo ">>> Membersihkan /var/www/landingPage (kecuali moodbites.apk dan .htaccess)..."
-                            find /var/www/landingPage -mindepth 1 \
-                                ! -name 'moodbites.apk' \
-                                ! -name '.htaccess' \
-                                -delete 2>/dev/null || true
-
-                            echo ">>> Copy dist ke /var/www/landingPage..."
-                            cp -r ~/mymoodbites/dist/. /var/www/landingPage/
-
-                            echo ">>> Selesai! Isi /var/www/landingPage:"
-                            ls -lah /var/www/landingPage
-
-ENDSSH
-                    """
+                                echo '>>> Selesai!' &&
+                                ls -lah ${REMOTE_DEPLOY_DIR}
+                            "
+                    '''
                 }
             }
         }
