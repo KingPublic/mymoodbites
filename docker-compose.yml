@@ -1,0 +1,7 @@
+services:
+  landingpage:
+    build: .
+    container_name: moodbites-landingpage
+    ports:
+      - "80:80"
+    restart: unless-stopped
