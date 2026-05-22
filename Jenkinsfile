@@ -6,9 +6,9 @@ pipeline {
     }
 
     environment {
-        REMOTE_DEPLOY_DIR = '/var/www/landingPage'
-        HOST_IP           = '103.185.52.161'
-        HOST_USER         = 'moodbites'
+        REMOTE_APP_DIR = '/home/moodbites/mymoodbites'
+        HOST_IP        = '103.185.52.161'
+        HOST_USER      = 'moodbites'
     }
 
     stages {
@@ -25,7 +25,11 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh '''
-                    npm install
+                    if [ -d node_modules ]; then
+                        npm ci
+                    else
+                        npm install
+                    fi
                 '''
             }
         }
@@ -46,14 +50,19 @@ pipeline {
                     )
                 ]) {
                     sh '''
-                        echo ">>> Bersihkan deploy dir di remote..."
+                        echo ">>> Upload dist ke remote..."
+                        scp -i $SSH_KEY -o StrictHostKeyChecking=no \
+                            -r dist/ $SSH_USER@${HOST_IP}:${REMOTE_APP_DIR}/dist
+
+                        echo ">>> Upload Dockerfile dan docker-compose..."
+                        scp -i $SSH_KEY -o StrictHostKeyChecking=no \
+                            Dockerfile docker-compose.yml \
+                            $SSH_USER@${HOST_IP}:${REMOTE_APP_DIR}/
+
+                        echo ">>> Docker build dan up di remote..."
                         ssh -i $SSH_KEY -o StrictHostKeyChecking=no \
                             $SSH_USER@${HOST_IP} \
-                            "find ${REMOTE_DEPLOY_DIR} -mindepth 1 ! -name 'moodbites.apk' ! -name '.htaccess' -delete 2>/dev/null || true"
-
-                        echo ">>> Copy dist ke remote..."
-                        scp -i $SSH_KEY -o StrictHostKeyChecking=no \
-                            -r dist/. $SSH_USER@${HOST_IP}:${REMOTE_DEPLOY_DIR}/
+                            "cd ${REMOTE_APP_DIR} && docker compose up -d --build"
 
                         echo ">>> Selesai!"
                     '''
@@ -64,7 +73,7 @@ pipeline {
 
     post {
         success {
-            echo '✅ Deployment berhasil! Landing page sudah live.'
+            echo '✅ Deployment berhasil! Landing page live di port 80.'
         }
         failure {
             echo '❌ Deployment gagal. Cek log di atas untuk detail.'
