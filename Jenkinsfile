@@ -25,11 +25,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh '''
-                    if [ -d node_modules ]; then
-                        npm ci
-                    else
-                        npm install
-                    fi
+                   npm install
                 '''
             }
         }
