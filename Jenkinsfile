@@ -25,7 +25,11 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh '''
-                    npm install
+                    if [ -d node_modules ]; then
+                        npm ci
+                    else
+                        npm install
+                    fi
                 '''
             }
         }
@@ -55,15 +59,15 @@ pipeline {
                         scp -i $SSH_KEY -o StrictHostKeyChecking=no \
                             -r dist/. $SSH_USER@${HOST_IP}:${REMOTE_APP_DIR}/dist/
 
-                        echo ">>> Upload Dockerfile dan docker-compose..."
+                        echo ">>> Upload Dockerfile, nginx.conf dan docker-compose..."
                         scp -i $SSH_KEY -o StrictHostKeyChecking=no \
-                            Dockerfile docker-compose.yml \
+                            Dockerfile nginx.conf docker-compose.yml \
                             $SSH_USER@${HOST_IP}:${REMOTE_APP_DIR}/
 
                         echo ">>> Docker build dan up di remote..."
                         ssh -i $SSH_KEY -o StrictHostKeyChecking=no \
                             $SSH_USER@${HOST_IP} \
-                            "cd ${REMOTE_APP_DIR} && docker compose up -d --build"
+                            "cd ${REMOTE_APP_DIR} && docker compose down && docker compose up -d --build"
 
                         echo ">>> Selesai!"
                     '''
