@@ -1,8 +1,0 @@
-services:
-  landingpage:
-    build: .
-    container_name: moodbites-landingpage
-    network_mode: host
-    volumes:
-      - /home/moodbites/apk/moodbites.apk:/usr/share/nginx/html/moodbites.apk:ro
-    restart: unless-stopped

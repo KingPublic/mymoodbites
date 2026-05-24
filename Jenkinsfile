@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        REMOTE_APP_DIR = '/home/moodbites/mymoodbites'
+        REMOTE_APP_DIR = '/var/www/landingPage'
         HOST_IP        = '103.185.52.161'
         HOST_USER      = 'moodbites'
     }
@@ -24,9 +24,7 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh '''
-                   npm install
-                '''
+                sh 'npm install'
             }
         }
 
@@ -46,24 +44,17 @@ pipeline {
                     )
                 ]) {
                     sh '''
-                        echo ">>> Buat folder dist di remote jika belum ada..."
+                        echo ">>> Buat folder deployment di remote jika belum ada..."
                         ssh -i $SSH_KEY -o StrictHostKeyChecking=no \
                             $SSH_USER@${HOST_IP} \
-                            "mkdir -p ${REMOTE_APP_DIR}/dist"
+                            "mkdir -m 775 -p ${REMOTE_APP_DIR}"
+
+                        echo ">>> Kosongkan folder deployment di remote..."
+                        find "${REMOTE_APP_DIR}" -mindepth 1 -maxdepth 1 ! -name "moodbites.apk" -exec rm -rf {} +
 
                         echo ">>> Upload dist ke remote..."
                         scp -i $SSH_KEY -o StrictHostKeyChecking=no \
-                            -r dist/. $SSH_USER@${HOST_IP}:${REMOTE_APP_DIR}/dist/
-
-                        echo ">>> Upload Dockerfile, nginx.conf dan docker-compose..."
-                        scp -i $SSH_KEY -o StrictHostKeyChecking=no \
-                            Dockerfile nginx.conf docker-compose.yml \
-                            $SSH_USER@${HOST_IP}:${REMOTE_APP_DIR}/
-
-                        echo ">>> Docker build dan up di remote..."
-                        ssh -i $SSH_KEY -o StrictHostKeyChecking=no \
-                            $SSH_USER@${HOST_IP} \
-                            "cd ${REMOTE_APP_DIR} && docker compose down && docker compose up -d --build"
+                            -r dist/* $SSH_USER@${HOST_IP}:${REMOTE_APP_DIR}/
 
                         echo ">>> Selesai!"
                     '''
