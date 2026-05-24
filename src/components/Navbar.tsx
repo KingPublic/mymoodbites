@@ -60,7 +60,7 @@ const Navbar = () => {
             href="https://moodbites.qzz.io/moodbites.apk"
             className="text-sm font-semibold text-white bg-coral hover:bg-coral/90 px-4 py-2 rounded-full transition-colors"
           >
-            Download APK
+            Download APP
           </a>
         </div>
 
@@ -93,7 +93,7 @@ const Navbar = () => {
             href="https://moodbites.qzz.io/moodbites.apk"
             className="text-sm font-semibold text-white bg-coral hover:bg-coral/90 px-4 py-2.5 rounded-full text-center transition-colors mt-1"
           >
-            Download APP
+            Download APK
           </a>
         </div>
       )}
