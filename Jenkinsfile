@@ -50,7 +50,9 @@ pipeline {
                             "mkdir -m 775 -p ${REMOTE_APP_DIR}"
 
                         echo ">>> Kosongkan folder deployment di remote..."
-                        find ${REMOTE_APP_DIR} -mindepth 1 -maxdepth 1 ! -name "moodbites.apk" ! -name ".htaccess" -exec rm -rf {} +
+                        ssh -i $SSH_KEY -o StrictHostKeyChecking=no \
+                            $SSH_USER@${HOST_IP} \
+                            find ${REMOTE_APP_DIR} -mindepth 1 -maxdepth 1 ! -name "moodbites.apk" ! -name ".htaccess" -exec rm -rf {} +
 
                         echo ">>> Upload dist ke remote..."
                         scp -i $SSH_KEY -o StrictHostKeyChecking=no \
