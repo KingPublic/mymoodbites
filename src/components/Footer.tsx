@@ -8,12 +8,39 @@ const Footer = () => (
         Makan sesuai perasaanmu, kapan saja.
       </p>
 
-      <div className="flex justify-center gap-6 mb-6">
+      <div className="flex justify-center gap-6 mb-4">
         {links.map((l) => (
           <a key={l} href={`#${l.toLowerCase()}`} className="text-primary-foreground/70 hover:text-primary-foreground text-sm transition-colors">
             {l}
           </a>
         ))}
+      </div>
+
+      <div className="flex flex-wrap justify-center gap-3 mb-6">
+        <a
+          href="https://miro.com/app/board/uXjVHe0w118=/?share_link_id=367930657801"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm font-medium text-primary-foreground/70 hover:text-primary-foreground border border-primary-foreground/30 rounded-full px-4 py-1.5 transition-colors"
+        >
+          🎨 Miro
+        </a>
+        <a
+          href="https://github.com/roczantya/moodbites-frontend"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm font-medium text-primary-foreground/70 hover:text-primary-foreground border border-primary-foreground/30 rounded-full px-4 py-1.5 transition-colors"
+        >
+          💻 GitHub Frontend
+        </a>
+        <a
+          href="https://www.figma.com/design/b7QQudzj1mNYk0mprMvSgc/moodBites?node-id=0-1&t=AfbSH7ZqKCfQpBSl-1"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm font-medium text-primary-foreground/70 hover:text-primary-foreground border border-primary-foreground/30 rounded-full px-4 py-1.5 transition-colors"
+        >
+          🖌️ Figma
+        </a>
       </div>
 
       <p className="text-primary-foreground/50 text-xs mb-1">
